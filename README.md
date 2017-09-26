@@ -12,6 +12,8 @@ Role Variables
 --------------
 
 * `phantomjs_version`: Desired version to install (2.1.1)
+* `phantomjs_checksum`: Checksum from provided download page 
+* `phantomjs_checksum_algorithm`: Checksum algorithm to use (sha256, md5)
 * `phantomjs_install_dir`: Location to install (/opt)
 * `phantomjs_download_dir`: Location to install (/tmp)
 
