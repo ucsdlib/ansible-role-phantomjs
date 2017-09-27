@@ -1,2 +1,8 @@
 ---
 # defaults file for ucsdlib.ansible-role-phantomjs
+phantomjs_version: 2.1.1
+phantomjs_checksum: 86dd9a4bf4aee45f1a84c9f61cf1947c1d6dce9b9e8d2a907105da7852460d2f
+phantomjs_checksum_algorithm: sha256
+phantomjs_install_dir: /opt
+phantomjs_download_dir: /tmp
+

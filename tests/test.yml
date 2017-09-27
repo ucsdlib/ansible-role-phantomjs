@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - ucsdlib.ansible-role-phantomjs
+    - ansible-role-phantomjs
