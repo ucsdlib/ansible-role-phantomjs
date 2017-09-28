@@ -5,6 +5,7 @@
       name: "{{ item }}"
       state: latest
     with_items:
+      - bzip2
       - fontconfig
       - fontconfig-devel
       - freetype
@@ -25,18 +26,20 @@
     - name: Download phantomjs
       get_url:
         url: '{{ phantomjs_download_uri }}'
-        dest: '{{ phantomjs_download_dir }}/phantomjs.tar.gz'
+        dest: '{{ phantomjs_download_dir }}/phantomjs.tar.bz2'
         checksum: '{{ phantomjs_checksum_algorithm }}:{{ phantomjs_checksum }}'
+      register: download_results
 
     - name: Unpack phantomjs
       unarchive:
-        src: '{{ phantomjs_download_dir }}/phantomjs.tar.gz'
+        src: '{{ phantomjs_download_dir }}/phantomjs.tar.bz2'
         dest: '{{ phantomjs_install_dir }}'
-        copy: no
+        remote_src: true
+      register: unpack_results
 
     - name: Remove phantomjs download
       file:
-        path: '{{ phantomjs_download_dir }}/phantomjs.tar.gz'
+        path: '{{ phantomjs_download_dir }}/phantomjs.tar.bz2'
         state: absent
 
     - name: Ensure /usr/local/bin directory exists
