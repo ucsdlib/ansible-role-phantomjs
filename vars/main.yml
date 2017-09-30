@@ -1,2 +1,11 @@
 ---
 # vars file for ucsdlib.ansible-role-phantomjs
+phantomjs_download_uri: https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-{{ phantomjs_version }}-linux-x86_64.tar.bz2
+phantomjs_version_dir: phantomjs-{{ phantomjs_version }}-linux-x86_64
+phantomjs_dependencies:
+  - bzip2
+  - fontconfig
+  - fontconfig-devel
+  - freetype
+  - freetype-devel
+  - libstdc++
