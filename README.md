@@ -18,6 +18,7 @@ Role Variables
 * `phantomjs_checksum_algorithm`: Checksum algorithm to use (sha256, md5)
 * `phantomjs_install_dir`: Location to install (/opt)
 * `phantomjs_download_dir`: Location to install (/tmp)
+* `phantomjs_bin_dir`: Location to install symlink (/usr/local/bin)
 
 Dependencies
 ------------

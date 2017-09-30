@@ -4,13 +4,7 @@
     yum:
       name: "{{ item }}"
       state: latest
-    with_items:
-      - bzip2
-      - fontconfig
-      - fontconfig-devel
-      - freetype
-      - freetype-devel
-      - libstdc++
+    with_items: "{{ phantomjs_dependencies }}"
 
   - name: Is PhantomJS installed?
     stat:
@@ -42,9 +36,9 @@
         path: '{{ phantomjs_download_dir }}/phantomjs.tar.bz2'
         state: absent
 
-    - name: Ensure /usr/local/bin directory exists
+    - name: Ensure {{ phantomjs_bin_dir }} directory exists
       file:
-        path: /usr/local/bin
+        path: '{{ phantomjs_bin_dir }}'
         state: directory
 
     when: not phantomjs_bin.stat.exists
@@ -52,6 +46,6 @@
   - name: Create phantomjs symlink
     file:
       src: '{{ phantomjs_install_dir ~ "/" ~ phantomjs_version_dir ~ "/bin/phantomjs"  }}'
-      dest: /usr/local/bin/phantomjs
+      dest: '{{ phantomjs_bin_dir }}/phantomjs'
       state: link
 
