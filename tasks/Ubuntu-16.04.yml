@@ -1,0 +1,11 @@
+---
+- name: Update cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install Ubuntu dependencies
+  apt:
+    name: '{{ item }}'
+    state: latest
+  with_items: '{{ phantomjs_dependencies }}'
