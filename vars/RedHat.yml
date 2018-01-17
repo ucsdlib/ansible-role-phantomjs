@@ -1,0 +1,8 @@
+---
+phantomjs_dependencies:
+  - bzip2
+  - fontconfig
+  - fontconfig-devel
+  - freetype
+  - freetype-devel
+  - libstdc++

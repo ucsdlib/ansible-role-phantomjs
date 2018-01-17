@@ -1,51 +1,59 @@
----
 # tasks file for ucsdlib.ansible-role-phantomjs
-  - name: Download dependencies
-    yum:
-      name: "{{ item }}"
-      state: latest
-    with_items: "{{ phantomjs_dependencies }}"
+---
+- name: Load OS specific variables
+  include_vars: '{{ item }}'
+  with_first_found:
+    - '{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml'
+    - '{{ ansible_distribution }}.yml'
+    - '{{ ansible_os_family }}.yml'
 
-  - name: Is PhantomJS installed?
-    stat:
-      path: '{{ phantomjs_install_dir ~ "/" ~ phantomjs_version_dir ~ "/bin/phantomjs"  }}'
-    register: phantomjs_bin
+- name: Load OS specific tasks
+  include: '{{ item }}'
+  static: no
+  with_first_found:
+    - '{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml'
+    - '{{ ansible_distribution }}.yml'
+    - '{{ ansible_os_family }}.yml'
 
-  - block:
-    - name: Create install directory
-      file:
-        path: '{{ phantomjs_install_dir }}'
-        state: directory
+- name: Is PhantomJS installed?
+  stat:
+    path: '{{ phantomjs_install_dir ~ "/" ~ phantomjs_version_dir ~ "/bin/phantomjs"  }}'
+  register: phantomjs_bin
 
-    - name: Download phantomjs
-      get_url:
-        url: '{{ phantomjs_download_uri }}'
-        dest: '{{ phantomjs_download_dir }}/phantomjs.tar.bz2'
-        checksum: '{{ phantomjs_checksum_algorithm }}:{{ phantomjs_checksum }}'
-      register: download_results
-
-    - name: Unpack phantomjs
-      unarchive:
-        src: '{{ phantomjs_download_dir }}/phantomjs.tar.bz2'
-        dest: '{{ phantomjs_install_dir }}'
-        remote_src: true
-      register: unpack_results
-
-    - name: Remove phantomjs download
-      file:
-        path: '{{ phantomjs_download_dir }}/phantomjs.tar.bz2'
-        state: absent
-
-    - name: Ensure {{ phantomjs_bin_dir }} directory exists
-      file:
-        path: '{{ phantomjs_bin_dir }}'
-        state: directory
-
-    when: not phantomjs_bin.stat.exists
-
-  - name: Create phantomjs symlink
+- block:
+  - name: Create install directory
     file:
-      src: '{{ phantomjs_install_dir ~ "/" ~ phantomjs_version_dir ~ "/bin/phantomjs"  }}'
-      dest: '{{ phantomjs_bin_dir }}/phantomjs'
-      state: link
+      path: '{{ phantomjs_install_dir }}'
+      state: directory
 
+  - name: Download phantomjs
+    get_url:
+      url: '{{ phantomjs_download_uri }}'
+      dest: '{{ phantomjs_download_dir }}/phantomjs.tar.bz2'
+      checksum: '{{ phantomjs_checksum_algorithm }}:{{ phantomjs_checksum }}'
+    register: download_results
+
+  - name: Unpack phantomjs
+    unarchive:
+      src: '{{ phantomjs_download_dir }}/phantomjs.tar.bz2'
+      dest: '{{ phantomjs_install_dir }}'
+      remote_src: true
+    register: unpack_results
+
+  - name: Remove phantomjs download
+    file:
+      path: '{{ phantomjs_download_dir }}/phantomjs.tar.bz2'
+      state: absent
+
+  - name: Ensure {{ phantomjs_bin_dir }} directory exists
+    file:
+      path: '{{ phantomjs_bin_dir }}'
+      state: directory
+
+  when: not phantomjs_bin.stat.exists
+
+- name: Create phantomjs symlink
+  file:
+    src: '{{ phantomjs_install_dir ~ "/" ~ phantomjs_version_dir ~ "/bin/phantomjs"  }}'
+    dest: '{{ phantomjs_bin_dir }}/phantomjs'
+    state: link

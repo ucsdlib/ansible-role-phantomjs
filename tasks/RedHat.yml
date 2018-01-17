@@ -1,0 +1,6 @@
+---
+- name: Install Ubuntu dependencies
+  yum:
+    name: '{{ item }}'
+    state: latest
+  with_items: '{{ phantomjs_dependencies }}'

@@ -5,6 +5,10 @@ PhantomJS
 
 Installs [PhantomJS](http://phantomjs.org/) via provided tar for linux x86/64.
 
+Currently supports:
+* Centos7/RHEL
+* Ubuntu 16.04 (and _possibly_ earlier)
+
 Requirements
 ------------
 
